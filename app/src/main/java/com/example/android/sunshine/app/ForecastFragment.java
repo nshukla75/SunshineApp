@@ -3,9 +3,11 @@ package com.example.android.sunshine.app;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -54,38 +56,40 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here
-       inflater.inflate(R.menu.forecastfragment,menu);
+       inflater.inflate(R.menu.forecastfragment, menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id=item.getItemId();
         if(id== R.id.action_refresh){
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("94043");
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+    }
+
+    public void updateWeather(){
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+        String units = prefs.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
+        weatherTask.execute(location, units);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] data = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
         mForecastAdapter =
                 new ArrayAdapter<String>(
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_forecast, // The name of the layout ID.
                         R.id.list_item_forecast_textview, // The ID of the textview to populate.
-                        weekForecast);
+                        new ArrayList<String>());
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
@@ -113,7 +117,7 @@ public class ForecastFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
             String format = "json";
-            String units = "metric";
+            //String units = "metric";
             int numdays = 7;
 
             try {
@@ -129,7 +133,7 @@ public class ForecastFragment extends Fragment {
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, units)
+                        .appendQueryParameter(UNITS_PARAM, params[1])
                         .appendQueryParameter(DAYS_PARAM, Integer.toString(numdays))
                         .build();
                 URL url = new URL(builtUri.toString());
