@@ -81,6 +81,7 @@ public class ForecastFragment extends Fragment {
         String units = prefs.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
         weatherTask.execute(location, units);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,6 +120,8 @@ public class ForecastFragment extends Fragment {
             String format = "json";
             //String units = "metric";
             int numdays = 7;
+            //String apiKeyStr ="[YOUR API KEY]";
+            String apiKeyStr = "7a23b56143f4b145fdc999760dc7dbe6";
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -129,15 +132,17 @@ public class ForecastFragment extends Fragment {
                 final String FORMAT_PARAM = "mode";
                 final String UNITS_PARAM = "units";
                 final String DAYS_PARAM = "cnt";
+                final String APIKEY_PARAM = "APPID";
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(FORMAT_PARAM, format)
                         .appendQueryParameter(UNITS_PARAM, params[1])
                         .appendQueryParameter(DAYS_PARAM, Integer.toString(numdays))
+                        .appendQueryParameter(APIKEY_PARAM, apiKeyStr)
                         .build();
                 URL url = new URL(builtUri.toString());
-
+                Log.v(LOG_TAG,"Getting Data from :   " + url);
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
