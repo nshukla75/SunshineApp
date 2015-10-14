@@ -118,7 +118,7 @@ public class TestUtilities extends AndroidTestCase {
         }
 
         // On earlier versions of Android, this onChange method is called
-       /* @Override
+        @Override
         public void onChange(boolean selfChange) {
             onChange(selfChange, null);
         }
@@ -126,7 +126,7 @@ public class TestUtilities extends AndroidTestCase {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             mContentChanged = true;
-        }*/
+        }
 
         public void waitForNotificationOrFail() {
             // Note: The PollingCheck class is taken from the Android CTS (Compatibility Test Suite).

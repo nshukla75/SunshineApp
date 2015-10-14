@@ -14,7 +14,7 @@
         android:title="@string/pref_units_label"
         android:summary="Select the units for temperature"
         android:key="@string/pref_units_key"
-        android:defaultValue="@string/pref_units_default"
+        android:defaultValue="@string/pref_units_metric"
         android:entries="@array/listArray"
         android:entryValues="@array/listValues" />
 
