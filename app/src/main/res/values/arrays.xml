@@ -14,18 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
  -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-    <!-- State when a row is being pressed, but hasn't yet been activated (finger down) -->
-    <item android:state_pressed="true">
-        <ripple android:color="@color/grey" />
-    </item>
+    <string-array name="pref_units_options">
+        <item>@string/pref_units_label_metric</item>
+        <item>@string/pref_units_label_imperial</item>
+    </string-array>
 
-    <!-- When the view is "activated".  In SINGLE_CHOICE_MODE, it flags the active row
-         of a ListView -->
-    <item android:state_activated="true"
-        android:drawable="@color/sunshine_light_blue" />
-
-    <!-- Default, "just hangin' out" state. -->
-    <item android:drawable="@android:color/transparent" />
-</selector>
+    <string-array name="pref_units_values">
+        <item>@string/pref_units_metric</item>
+        <item>@string/pref_units_imperial</item>
+    </string-array>
+</resources>
