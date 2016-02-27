@@ -15,7 +15,7 @@ For the original version, please go [here](https://github.com/udacity/Sunshine).
 
 A changelog for the course can be found [here](https://docs.google.com/a/knowlabs.com/document/d/193xJb_OpcNCqgquMhxPrMh05IEYFXQqt0S6-6YK8gBw/pub).
 
-#Execution Instruction
+#Execution Instructions
 Requires: Android Studio v1.5.0+
 
 Dependencies:
